@@ -1,0 +1,81 @@
+//Queries Neo4J
+//Autor: Jorge Caballeros-Mariana David 
+//Bases de datos 2
+
+//Creacion nodos person
+CREATE (:Person {name: 'Alice', age: 25, city: 'Sydney', occupation: 'Doctor'})
+CREATE (:Person {name: 'Bob', age: 30, city: 'Paris', occupation: 'Engineer'})
+CREATE (:Person {name: 'Charlie', age: 35, city: 'London', occupation: 'Lawyer'})
+CREATE (:Person {name: 'Dave', age: 40, city: 'New York City', occupation: 'Professor'})
+CREATE (:Person {name: 'Eve', age: 45, city: 'Los Angeles', occupation: 'Artist'})
+
+//Creacion nodos place
+CREATE (:Place {name: 'Sydney', country: 'Australia', population: 5000000})
+CREATE (:Place {name: 'New York City', country: 'USA', population: 8500000})
+CREATE (:Place {name: 'Los Angeles', country: 'USA', population: 4000000})
+CREATE (:Place {name: 'London', country: 'UK', population: 8900000})
+CREATE (:Place {name: 'Paris', country: 'France', population: 2200000})
+
+//Creacion nodos Movie
+CREATE (:Movie {name: 'Forrest Gump', genre: 'Drama', language: 'English', duration: 142})
+CREATE (:Movie {name: 'Mad Max: Fury Road', genre: 'Action', language: 'English', duration: 120})
+CREATE (:Movie {name: 'Pulp Fiction', genre: 'Crime', language: 'English', duration: 154})
+CREATE (:Movie {name: 'The Fantastic Four', genre: 'Action', language: 'English', duration: 100})
+CREATE (:Movie {name: 'Everything Everywhere All at Once', genre: 'Sci-Fi', language: 'English', duration: 140})
+CREATE (:Movie {name: 'The Matrix', genre: 'Sci-Fi', language: 'English', duration: 136})
+//Creacion nodos Year
+CREATE (:Year {number: 1994})
+CREATE (:Year {number: 2015})
+CREATE (:Year {number: 2005})
+CREATE (:Year {number: 2022})
+CREATE (:Year {number: 1999})
+
+//Relaciones Person-Place
+MATCH (p:Person {name: 'Alice'}), (pl:Place {name: 'Sydney'})
+CREATE (p)-[:LIVES_IN]->(pl)
+MATCH (p:Person {name: 'Eve'}), (pl:Place {name: 'New York City'})
+CREATE (p)-[:LIVES_IN]->(pl)
+MATCH (p:Person {name: 'Bob'}), (pl:Place {name: 'Paris'})
+CREATE (p)-[:LIVES_IN]->(pl)
+MATCH (p:Person {name: 'Charlie'}), (pl:Place {name: 'London'})
+CREATE (p)-[:LIVES_IN]->(pl)
+MATCH (p:Person {name: 'Dave'}), (pl:Place {name: 'New York City'})
+CREATE (p)-[:LIVES_IN]->(pl)
+MATCH (p:Person {name: 'Eve'}), (pl:Place {name: 'New York City'})
+CREATE (p)-[:LIVES_IN]->(pl)
+
+//Relaciones Person-Movie
+MATCH (p:Person {name: 'Alice'}), (m:Movie {name: 'Forrest Gump'})
+CREATE (p)-[:VIEWED]->(m)
+MATCH (p2:Person {name: 'Eve'}), (m2:Movie {name: 'Forrest Gump'})
+CREATE (p2)-[:VIEWED]->(m2)
+MATCH (p3:Person {name: 'Bob'}), (m3:Movie {name: 'Pulp Fiction'})
+CREATE (p3)-[:VIEWED]->(m3)
+MATCH (p4:Person {name: 'Charlie'}), (m4:Movie {name: 'The Matrix'})
+CREATE (p4)-[:VIEWED]->(m4)
+MATCH (p5:Person {name: 'Dave'}), (m5:Movie {name: 'Mad Max: Fury Road'})
+CREATE (p5)-[:VIEWED]->(m5)
+
+//Relaciones Movie-Year
+MATCH (m:Movie {name: 'Forrest Gump'}), (y:Year {number: 1994})
+CREATE (m)-[:RELEASED_IN {since: 1994}]->(y)
+MATCH (m:Movie {name: 'Mad Max: Fury Road'}), (y:Year {number: 2015})
+CREATE (m)-[:RELEASED_IN {since: 2015}]->(y)
+MATCH (m:Movie {name: 'The Fantastic Four'}), (y:Year {number: 2005})
+CREATE (m)-[:RELEASED_IN {since: 2005}]->(y)
+MATCH (m:Movie {name: 'Everything Everywhere All at Once'}), (y:Year {number: 2022})
+CREATE (m)-[:RELEASED_IN {since: 2022}]->(y)
+MATCH (m:Movie {name: 'The Matrix'}), (y:Year {number: 1999})
+CREATE (m)-[:RELEASED_IN {since: 1999}]->(y)
+MATCH (m:Movie {name: 'Pulp Fiction'}), (y:Year {number: 2005})
+CREATE (m)-[:RELEASED_IN {since: 1994}]->(y)
+
+//Relacion Movie-Movie
+MATCH (m1:Movie {name: 'Forrest Gump'}), (m2:Movie {name: 'Pulp Fiction'})
+CREATE (m1)-[:SIMILAR_TO]->(m2)
+MATCH (m1:Movie {name: 'Mad Max: Fury Road'}), (m2:Movie {name: 'The Fantastic Four'})
+CREATE (m1)-[:SIMILAR_TO]->(m2)
+MATCH (m1:Movie {name: 'Everything Everywhere All at Once'}), (m2:Movie {name: 'The Matrix'})
+CREATE (m1)-[:SIMILAR_TO]->(m2)
+MATCH (m1:Movie {name: 'Everything Everywhere All at Once'}), (m2:Movie {name: 'The Fantastic Four'})
+CREATE (m1)-[:SIMILAR_TO]->(m2)
